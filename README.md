@@ -6,8 +6,18 @@ A forensic record of how the WOWSA independent marathon swim ratification proces
 This is the source of truth. Any proposed change, rebuild or automation should be planned
 against what is written here, not against a description of how the process is supposed to work.
 
-Everything in `docs/` describes the system **as it is**. Forward looking analysis lives in one
-place, [proposals/proposal-analysis.md](proposals/proposal-analysis.md).
+---
+
+## How this repository is organised
+
+| Folder | What it holds |
+|---|---|
+| **[docs/](docs/)** | The system exactly as it works today. Descriptive only. Nothing in here proposes a change |
+| **[proposals/](proposals/)** | Everything forward looking. Analysis of proposed redesigns, what each part would touch, what a rebuild would automate, what would still need a person, and recommendations |
+| **[reference/](reference/)** | Terminology, and a visual map of the whole process |
+
+Proposals are deliberately kept out of `docs/` so that the description of the live system stays
+trustworthy. If you are here to plan a change, read `docs/` first and `proposals/` second.
 
 ---
 
@@ -27,7 +37,7 @@ place, [proposals/proposal-analysis.md](proposals/proposal-analysis.md).
 | See exactly what a person does, and how often | [docs/10-manual-work.md](docs/10-manual-work.md) |
 | Know what the tooling genuinely cannot do | [docs/11-constraints.md](docs/11-constraints.md) |
 | Review known defects | [docs/12-defects.md](docs/12-defects.md) and the [issue tracker](../../issues) |
-| See what a proposed redesign would change | [proposals/proposal-analysis.md](proposals/proposal-analysis.md) |
+| See what a proposed redesign would change, and what a rebuild would automate | [proposals/proposal-analysis.md](proposals/proposal-analysis.md) |
 
 Terminology matters in this domain and is easy to get wrong.
 Read [reference/glossary.md](reference/glossary.md) before writing anything customer facing.
