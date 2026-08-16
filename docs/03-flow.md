@@ -1474,11 +1474,14 @@ Rose usually ignores the email and goes straight into Jotform to set the outcome
 
 The email says it outright: "Please update committee decision below." The determination was made by the committee, on the ratification page, through the embedded form. This node is where that outcome is transcribed into the workflow so it can branch.
 
-**And this is where the twelve assessments become one word.**
+**There is a rule, and it is a count.** Three ratified reviews from three committee members means
+the swim is ratified. No judgment is exercised here. The outcome is read off the count and recorded.
 
-Three reviewers each returned four graded assessments on a four-point scale, plus notes. Rose reads all of it and converts it into a single Ratified or Not Ratified, using judgment. There is no rule, no threshold, and no record of how the conversion was reasoned, beyond an optional free text comment.
-
-So the answer to "how do twelve graded assessments become a decision" is: a person reads them and decides.
+**But the review request goes to twelve people and the form caps at three submissions**, so the
+first three responses close it. One not ratified among those three ends the case immediately, even
+though a fourth reviewer might have ratified it. Whether the rule is "three ratified reviews
+regardless of others" or "the first three to respond decide" has never been stated. See
+[09-committee.md](09-committee.md).
 
 **Require Login is off.** A ratification determination can be recorded by clicking a button in an email, with no authentication.
 
@@ -1488,9 +1491,9 @@ So the answer to "how do twelve graded assessments become a decision" is: a pers
 |---|---|---|
 | Route review | Quinn, by email, after Rose measures the route in Google Maps | Records his answer |
 | Independent Observer Agreement | Rose | Is the decision |
-| Ratified or Not Ratified | The committee, via the embedded form on the page | Records their outcome, collapsed to binary by Rose |
+| Ratified or Not Ratified | The committee, by count. Three ratified reviews means ratified | Records the count |
 
-Two of the three approvals in this workflow are data entry. Only one is a judgment made at the point of clicking.
+Two of the three approvals in this workflow are data entry. Only the observer agreement review is a judgment made at the point of clicking.
 
 ### Branches
 

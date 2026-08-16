@@ -25,7 +25,7 @@ Nine parts of the proposal land on an existing step. Five have no equivalent ste
 | 5 | Page created at clearance, private draft through review, published on decision | This is already the design. The genuine delta is per-member authenticated access instead of one shared password. | Already exists |
 | 6 | A live committee docket replacing the cloned form and the dispatch email | The form is cloned per swim only because submission caps are per form. Dispatch and reviewer counting are manual. | Replaces |
 | 7 | Comments anchored to named parts of the record | Reviewer notes live inside form submissions and never reach the page. The proposal does not specify a mechanism. | New |
-| 8 | Binary unanimous vote, 3 of 3, named reviewers, recusal and alternates | Reviewers give a four-point assessment on four questions. Twelve people are asked, whichever three respond first decide, so there is no assignment to recuse from. | **Conflicts** |
+| 8 | Binary unanimous vote, 3 of 3, named reviewers, recusal and alternates | Closer to reality than it looks. The rule today is already a count: three ratified reviews means ratified. But twelve people are asked and the form caps at three, so the first three responses decide and a single not ratified among them ends it. His version, where anything short of unanimous stays pending rather than failing, would fix that. It still does not address a pool larger than three. | **Partly fixes** |
 | 9 | WOWSA Decision, GWR Referral and GWR Status as separate lines, plus amendment versions | One outcome line. Amendments arrive as email replies with no record of what changed. | New |
 | — | Public status page per submission | Nothing equivalent. Status is checked against a manually maintained Airtable table. | New |
 | — | Public registry of every submission, permanent | Nothing equivalent. A permanent transparency commitment. | New |
@@ -35,17 +35,23 @@ Nine parts of the proposal land on an existing step. Five have no equivalent ste
 | — | "Not Ratified" replacing "Rejected" | "Rejected" has never been used. The terms in use are Not Ratified, attempted, and verified attempt for the public and social wording. | Already exists |
 | — | Publishing Not Ratified decisions | Already happens, and those swims also receive a certificate and social assets as a verified attempt. | Already exists |
 
-### The one real conflict
+### The one genuine conflict, and it is not where it looked
 
-Mark 8. The proposal describes the committee decision as "always a unanimous 3 of 3 vote" of
-Ratified or Not Ratified, with quorum, recusal and alternates.
+The proposal describes the committee decision as "always a unanimous 3 of 3 vote", with quorum,
+recusal and alternates.
 
-That is not what happens. Reviewers submit a four-point assessment on each of three evidence
-categories plus an overall recommendation. Twelve people are invited and whichever three respond
-first decide. Nobody is assigned, so there is nothing to recuse from.
+The rule today is already a count: **three ratified reviews means the swim is ratified.** That part
+matches. What does not match is everything around it. Twelve people are invited, nobody is
+assigned, and the form caps at three submissions, so the first three to respond decide. One not
+ratified among those three ends the case, even if a fourth reviewer would have ratified it.
 
-Adopting mark 8 would be a **change to how the committee works**, not a description of it, and it
-would flatten a graded assessment into a binary one.
+**So the proposal partly fixes a real defect.** Treating anything short of unanimous as pending
+rather than as a failure would stop the automatic not ratified. It does not address a reviewer pool
+larger than three, and there is nothing to recuse from while nobody is assigned.
+
+What still needs answering, and it is a governance question rather than a design one: is the rule
+three ratified reviews regardless of any not ratified reviews from others, or is it the first three
+to respond decide?
 
 ### WordPress
 
@@ -126,14 +132,14 @@ Five things. These are the parts where WOWSA's judgment is the product, not the 
 | | What | Why it cannot move |
 |---|---|---|
 | Judgment | **Approving a route** | Everything can be prepared, measured and checked. Whether the plan is sound is a person's call |
-| Judgment | **The committee's assessment** | Three people deciding whether a swim meets the standard. This is what WOWSA is for |
+| Judgment | **The committee's assessment** | Committee members deciding whether a swim meets the standard. The determination is a count, but what each reviewer submits is judgment. This is what WOWSA is for |
 | Judgment | **Whether evidence is credible** | A system can confirm a photograph exists and carries a timestamp. It cannot judge whether the photograph shows the swim |
 | Judgment | **Borderline threshold calls** | Whether an observer's role genuinely overlaps a crew role is not a pass or fail check |
 | Field conditions | **Capturing anything live during a swim** | Already tried, twice. Rose built both an online observer log and a real time media submission form that captured timestamps at the point of capture. Both were field tested and neither held up. Crews are in open water with no internet and often no laptop |
 | Craft | **The video, and choosing the photographs** | Which moments carry a swim is an editorial decision. The video is also cut in desktop software that nothing can reach |
 
-**Turning the committee's assessments into a determination also stays with a person.** It is not a
-rule waiting to be written down.
+**The determination itself is not judgment.** It is a count: three ratified reviews means ratified.
+What each reviewer submits is entirely judgment, and that is the part that stays.
 
 ---
 

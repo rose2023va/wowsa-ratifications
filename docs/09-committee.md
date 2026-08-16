@@ -69,11 +69,32 @@ of interest questions and a signature.
 
 ## How those become a decision
 
-Rose reads all of it and converts it into a single Ratified or Not Ratified.
+**There is a rule, and it is a count.**
 
-There is no rule recorded anywhere for what combination of assessments ratifies a swim, no
-threshold, and no tie-break. The reasoning is not recorded beyond an optional comment on the
-approval node.
+> Three ratified reviews from three committee members means the swim is ratified.
+
+No judgment is exercised at the recording step. The admin reads the count and records the outcome.
+The committee decides.
+
+### The conflict this creates
+
+The ratification page link and the review request go to **twelve** people. The cloned form is
+capped at **three** submissions.
+
+So the first three responses close the form. If one of those three returns not ratified, the swim
+is recorded as not ratified immediately, even though a fourth reviewer might have ratified it and
+produced three ratified reviews.
+
+**The rule and the mechanism do not agree.** Two readings are possible and nobody has stated which
+is intended:
+
+| Reading | What it means |
+|---|---|
+| Three ratified reviews, regardless of any not ratified reviews from others | The pool stays open until three ratified reviews exist, or until it is clear they cannot be reached |
+| The first three to respond decide | What the cap currently enforces |
+
+A related ambiguity sits underneath it. Reviewers submit a four-point scale, not a binary. Whether
+"Approve with qualifications" counts toward the three has never been written down either.
 
 ## What gets published
 
@@ -99,6 +120,7 @@ Worth stating plainly, because it affects any redesign.
 
 | Where | Shape |
 |---|---|
-| What reviewers submit | Four-point scale, four questions, three reviewers |
+| What reviewers submit | Four-point scale, four questions |
+| How the outcome is reached | A count of ratified reviews, threshold three |
 | What is published | A tick |
 | What the workflow records | Ratified or Not Ratified |
