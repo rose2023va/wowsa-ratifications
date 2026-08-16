@@ -1,0 +1,1260 @@
+<title>Ratification Pipeline Map</title>
+<style>
+  /* ---------- tokens: light (bare :root) ---------- */
+  :root{
+    --ground:#EEF2F3;
+    --surface:#FFFFFF;
+    --surface-2:#F6F9F9;
+    --ink:#0B1A24;
+    --ink-2:#3A4C56;
+    --ink-3:#67787F;
+    --rule:#D3DDDF;
+    --rule-soft:#E4EBEC;
+
+    --tide:#12626F;        /* automated */
+    --tide-soft:#DDEDEF;
+    --signal:#A9500F;      /* manual */
+    --signal-soft:#F7E7D9;
+    --flag:#96242D;        /* break / defect */
+    --flag-soft:#F8E1E2;
+    --crew:#514398;        /* swimmer, observer, committee */
+    --crew-soft:#E7E4F4;
+
+    --shadow:0 1px 2px rgba(11,26,36,.05), 0 8px 24px -12px rgba(11,26,36,.18);
+
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#08141B;
+      --surface:#0F212B;
+      --surface-2:#132A35;
+      --ink:#E8F0F2;
+      --ink-2:#AEC0C7;
+      --ink-3:#7C919A;
+      --rule:#223D49;
+      --rule-soft:#1A313C;
+
+      --tide:#54BFCE;
+      --tide-soft:#12333B;
+      --signal:#E8944F;
+      --signal-soft:#3A2313;
+      --flag:#E8747D;
+      --flag-soft:#3B1519;
+      --crew:#A79AE0;
+      --crew-soft:#221E44;
+
+      --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#08141B;
+    --surface:#0F212B;
+    --surface-2:#132A35;
+    --ink:#E8F0F2;
+    --ink-2:#AEC0C7;
+    --ink-3:#7C919A;
+    --rule:#223D49;
+    --rule-soft:#1A313C;
+
+    --tide:#54BFCE;
+    --tide-soft:#12333B;
+    --signal:#E8944F;
+    --signal-soft:#3A2313;
+    --flag:#E8747D;
+    --flag-soft:#3B1519;
+    --crew:#A79AE0;
+    --crew-soft:#221E44;
+
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 96px}
+
+  a{color:var(--tide);text-underline-offset:2px;text-decoration-thickness:1px}
+  a:focus-visible{outline:2px solid var(--tide);outline-offset:2px;border-radius:2px}
+
+  /* ---------- masthead ---------- */
+  .masthead{padding:72px 0 40px;border-bottom:1px solid var(--rule)}
+  .eyebrow{
+    font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--ink-3);margin:0 0 20px;
+  }
+  h1{
+    font-family:var(--serif);font-weight:400;font-size:clamp(38px,6vw,60px);
+    line-height:1.02;letter-spacing:-.015em;margin:0 0 20px;text-wrap:balance;
+  }
+  .standfirst{
+    font-size:19px;line-height:1.55;color:var(--ink-2);max-width:62ch;margin:0 0 36px;
+  }
+  .figures{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--rule-soft)}
+  .fig{
+    flex:1 1 150px;padding:18px 20px 18px 0;border-right:1px solid var(--rule-soft);
+  }
+  .fig:last-child{border-right:0}
+  .fig b{
+    display:block;font-family:var(--serif);font-size:32px;font-weight:400;line-height:1;
+    font-variant-numeric:tabular-nums;margin-bottom:6px;
+  }
+  .fig span{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);line-height:1.4;display:block}
+
+  /* ---------- legend ---------- */
+  .legend{
+    display:flex;flex-wrap:wrap;gap:10px;padding:24px 0 0;
+  }
+  .key{
+    display:inline-flex;align-items:center;gap:8px;padding:6px 12px 6px 10px;
+    border:1px solid var(--rule);border-radius:2px;background:var(--surface);
+    font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);
+  }
+  .dot{width:9px;height:9px;border-radius:50%;flex:none}
+  .dot.auto{background:var(--tide)}
+  .dot.manual{background:var(--signal)}
+  .dot.break{background:var(--flag)}
+
+  /* ---------- section headings ---------- */
+  .band{padding:64px 0 8px}
+  .band h2{
+    font-family:var(--serif);font-weight:400;font-size:clamp(26px,3.4vw,36px);
+    line-height:1.1;letter-spacing:-.01em;margin:0 0 10px;text-wrap:balance;
+  }
+  .band p.lede{color:var(--ink-2);max-width:64ch;margin:0}
+
+  /* ---------- the spine ---------- */
+  .flow{position:relative;margin-top:36px}
+  .flow::before{
+    content:"";position:absolute;left:23px;top:12px;bottom:12px;width:2px;
+    background:var(--rule);
+  }
+  .station{position:relative;padding-left:72px;padding-bottom:28px}
+  .marker{
+    position:absolute;left:0;top:2px;width:48px;height:48px;border-radius:50%;
+    background:var(--surface);border:2px solid var(--rule);
+    display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink-2);
+    font-variant-numeric:tabular-nums;z-index:1;
+  }
+  .station.is-auto .marker{border-color:var(--tide);color:var(--tide)}
+  .station.is-manual .marker{border-color:var(--signal);color:var(--signal)}
+  .station.is-break .marker{border-color:var(--flag);color:var(--flag)}
+
+  .card{
+    background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  .card-head{padding:18px 22px 16px;border-bottom:1px solid var(--rule-soft)}
+  .station.is-manual .card-head{background:var(--signal-soft)}
+  .station.is-break .card-head{background:var(--flag-soft)}
+  .station.is-auto .card-head{background:var(--tide-soft)}
+
+  .card-head h3{
+    font-family:var(--serif);font-weight:400;font-size:22px;line-height:1.2;
+    margin:0 0 8px;letter-spacing:-.005em;
+  }
+  .meta{display:flex;flex-wrap:wrap;gap:6px}
+  .tag{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+    padding:3px 8px;border-radius:2px;border:1px solid currentColor;opacity:.9;
+  }
+  .tag.sys{color:var(--ink-3)}
+  .tag.who{color:var(--ink-2)}
+  .tag.auto{color:var(--tide)}
+  .tag.manual{color:var(--signal)}
+  .tag.break{color:var(--flag)}
+
+  .card-body{padding:20px 22px 22px;display:flex;flex-direction:column;gap:14px}
+  .card-body > p{margin:0;color:var(--ink-2)}
+  .card-body strong{color:var(--ink);font-weight:600}
+
+  ul.steps{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px;color:var(--ink-2)}
+  ul.steps li::marker{color:var(--ink-3)}
+
+  .note{
+    border-left:3px solid var(--flag);background:var(--flag-soft);
+    padding:12px 16px;border-radius:0 3px 3px 0;
+  }
+  .note.warn{border-left-color:var(--signal);background:var(--signal-soft)}
+  .note.info{border-left-color:var(--tide);background:var(--tide-soft)}
+  .note h4{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    margin:0 0 6px;color:var(--ink-2);
+  }
+  .note p{margin:0;font-size:15px;color:var(--ink-2)}
+  .note p + p{margin-top:8px}
+
+  .links{display:flex;flex-direction:column;gap:5px;padding-top:2px}
+  .links a, .links span.dead{
+    font-family:var(--mono);font-size:12.5px;word-break:break-all;line-height:1.45;
+  }
+  .links span.dead{color:var(--ink-3)}
+  .lbl{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3);display:block;margin-bottom:4px;
+  }
+
+  code{
+    font-family:var(--mono);font-size:.88em;background:var(--surface-2);
+    border:1px solid var(--rule-soft);border-radius:2px;padding:1px 5px;color:var(--ink);
+  }
+
+  /* ---------- branch ---------- */
+  .branch{display:grid;gap:12px;grid-template-columns:1fr 1fr;margin-top:2px}
+  @media (max-width:720px){.branch{grid-template-columns:1fr}}
+  .branch > div{
+    border:1px solid var(--rule);border-radius:3px;padding:14px 16px;background:var(--surface-2);
+  }
+  .branch h5{
+    font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    margin:0 0 8px;
+  }
+  .branch .yes h5{color:var(--tide)}
+  .branch .no h5{color:var(--flag)}
+  .branch p{margin:0;font-size:14.5px;color:var(--ink-2)}
+
+  /* ---------- tables ---------- */
+  .tablewrap{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+  table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px}
+  th,td{text-align:left;padding:11px 16px;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  th{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-3);font-weight:500;background:var(--surface-2);
+  }
+  tr:last-child td{border-bottom:0}
+  td.m{font-family:var(--mono);font-size:12.5px;word-break:break-all}
+
+  /* ---------- issue grid ---------- */
+  .grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:28px}
+  .issue{
+    background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+    padding:18px 20px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow);
+  }
+  .issue .sev{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--flag);
+  }
+  .issue.med .sev{color:var(--signal)}
+  .issue h4{font-family:var(--serif);font-weight:400;font-size:19px;line-height:1.25;margin:0}
+  .issue p{margin:0;font-size:15px;color:var(--ink-2)}
+
+  /* ---------- diagram ---------- */
+  figure.map{margin:32px 0 0;padding:0}
+  .mapscroll{
+    overflow-x:auto;background:var(--surface);border:1px solid var(--rule);
+    border-radius:3px;box-shadow:var(--shadow);padding:8px;
+  }
+  .mapscroll svg{display:block;width:100%;min-width:900px;height:auto}
+  figcaption{
+    margin-top:14px;font-size:15px;color:var(--ink-2);max-width:70ch;
+  }
+  .maplegend{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+  .mk{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);
+  }
+  .sw{width:22px;height:13px;border-radius:2px;background:var(--surface);flex:none}
+  .sw.a{border:1.6px solid var(--tide)}
+  .sw.m{border:1.6px solid var(--signal)}
+  .sw.c{border:1.6px solid var(--crew)}
+  .sw.dec{border:2.4px solid var(--signal);border-radius:0;clip-path:polygon(6px 0,100% 0,calc(100% - 6px) 100%,0 100%)}
+  .swdot{width:11px;height:11px;border-radius:50%;background:var(--flag);flex:none}
+
+  footer{
+    margin-top:72px;padding-top:24px;border-top:1px solid var(--rule);
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-3);
+    display:flex;flex-wrap:wrap;gap:8px 24px;
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <h1>Ratification Pipeline Map</h1>
+
+  </header>
+
+  <section class="band">
+    <h2>The map</h2>
+    <div class="maplegend">
+      <span class="mk"><span class="sw m"></span>Admin, manual</span>
+      <span class="mk"><span class="sw c"></span>Swimmer, observer, committee</span>
+      <span class="mk"><span class="sw a"></span>Runs automatically</span>
+      <span class="mk"><span class="sw dec"></span>Decision point</span>
+      <span class="mk"><span class="swdot"></span>Broken or unverified</span>
+    </div>
+
+    <figure class="map">
+      <div class="mapscroll">
+        <svg viewBox="0 0 1350 2730" role="img"
+             aria-label="Process map of the WOWSA swim ratification pipeline, showing forty-four steps across six systems from purchase to social publication, colour coded by whether the work is done by admin, by the swimmer and their team, or automatically.">
+          <defs>
+            <marker id="ar" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto">
+              <polygon points="0,0 10,4 0,8" fill="var(--ink-3)"/>
+            </marker>
+          </defs>
+
+          <!-- lanes -->
+          <g>
+            <rect x="40"   y="112" width="210" height="2578" rx="3" fill="var(--surface-2)"/>
+            <rect x="270"  y="112" width="210" height="2578" rx="3" fill="var(--surface-2)"/>
+            <rect x="500"  y="112" width="210" height="2578" rx="3" fill="var(--surface-2)"/>
+            <rect x="730"  y="112" width="210" height="2578" rx="3" fill="var(--surface-2)"/>
+            <rect x="960"  y="112" width="210" height="2578" rx="3" fill="var(--surface-2)"/>
+            <rect x="1185" y="112" width="130" height="2578" rx="3" fill="var(--surface-2)"/>
+          </g>
+          <g font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="10.5" letter-spacing="1.2"
+             fill="var(--ink-3)" text-anchor="middle">
+            <text x="145"  y="98">WOOCOMMERCE / AIRTABLE</text>
+            <text x="375"  y="98">JOTFORM</text>
+            <text x="605"  y="98">GOOGLE</text>
+            <text x="835"  y="98">WORDPRESS</text>
+            <text x="1065" y="98">TOOLS &amp; EMAIL</text>
+            <text x="1250" y="98">TRACKER</text>
+          </g>
+
+          <!-- arrows -->
+          <g fill="none" stroke="var(--ink-3)" stroke-width="1.4" marker-end="url(#ar)">
+            <path d="M145 170 V184"/>
+            <path d="M145 228 V242"/>
+            <path d="M145 286 V300"/>
+            <path d="M145 344 V352 H375 V358"/>
+            <path d="M375 402 V416"/>
+            <path d="M375 460 V470 H605 V474"/>
+            <path d="M375 470 V474"/>
+            <path d="M375 518 V584 H1065 V590"/>
+            <path d="M1065 634 V648"/>
+            <path d="M1065 692 V706"/>
+            <path d="M1065 750 V758 H375 V764"/>
+            <path d="M375 808 V822"/>
+            <path d="M375 866 V880"/>
+            <path d="M375 924 V938"/>
+            <path d="M375 982 V996"/>
+            <path d="M375 1040 V1054"/>
+            <path d="M375 1098 V1106 H1065 V1170" stroke-dasharray="5 4"/>
+            <path d="M1065 1214 V1228"/>
+            <path d="M1065 1272 V1280 H605 V1286"/>
+            <path d="M605 1330 V1344"/>
+            <path d="M605 1388 V1396 H375 V1402"/>
+            <path d="M375 1446 V1460"/>
+            <path d="M375 1504 V1518"/>
+            <path d="M375 1562 V1576"/>
+            <path d="M375 1620 V1634"/>
+            <path d="M375 1678 V1686 H605 V1692"/>
+            <path d="M605 1736 V1744 H1065 V1750"/>
+            <path d="M1065 1794 V1808"/>
+            <path d="M1065 1852 V1866"/>
+            <path d="M1065 1910 V1924"/>
+            <path d="M1065 1968 V1976 H835 V1982"/>
+            <path d="M835 2026 V2034 H375 V2040"/>
+            <path d="M375 2084 V2092 H835 V2098"/>
+            <path d="M835 2142 V2150 H1065 V2156"/>
+            <path d="M1065 2200 V2208 H835 V2214"/>
+            <path d="M835 2258 V2272"/>
+            <path d="M835 2316 V2324 H375 V2330"/>
+            <path d="M375 2374 V2382 H1065 V2388"/>
+            <path d="M1065 2432 V2440 H605 V2446"/>
+            <path d="M605 2490 V2498 H375 V2504"/>
+            <path d="M375 2548 V2556 H1065 V2562"/>
+            <path d="M1065 2606 V2620"/>
+          </g>
+
+          <!-- dead ends -->
+          <g fill="none" stroke="var(--flag)" stroke-width="1.6">
+            <path d="M605 518 V532"/><path d="M581 534 H629"/>
+            <path d="M290 788 H272"/><path d="M272 777 V799"/>
+            <path d="M290 1020 H272"/><path d="M272 1009 V1031"/>
+            <path d="M290 2354 H272"/><path d="M272 2343 V2365"/>
+          </g>
+          <g font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" fill="var(--flag)">
+            <text x="605" y="550" text-anchor="middle">branch ends</text>
+            <text x="256" y="784" text-anchor="end">denied</text>
+            <text x="256" y="796" text-anchor="end">workflow ends</text>
+            <text x="256" y="1016" text-anchor="end">denied</text>
+            <text x="256" y="1028" text-anchor="end">workflow ends</text>
+            <text x="256" y="2350" text-anchor="end">not ratified</text>
+            <text x="256" y="2362" text-anchor="end">workflow ends</text>
+            <text x="256" y="2374" text-anchor="end">certs sent manually</text>
+          </g>
+
+          <!-- arrow labels -->
+          <g font-family="ui-monospace,SFMono-Regular,Menlo,monospace" font-size="9.5" fill="var(--ink-3)" text-anchor="middle">
+            <text x="262" y="348">form link</text>
+            <text x="500" y="466">every submission</text>
+            <text x="720" y="580">coordinates</text>
+            <text x="720" y="754">Quinn's reply</text>
+            <text x="720" y="1102">weeks or months pass</text>
+            <text x="835" y="1276">swim date passes</text>
+            <text x="835" y="1392">folder ready</text>
+            <text x="490" y="1682">form uploads only</text>
+            <text x="835" y="1740">evidence assembled</text>
+            <text x="950" y="1972">assets ready</text>
+            <text x="950" y="2204">3 of 12 respond</text>
+            <text x="605" y="2320">committee outcome</text>
+            <text x="720" y="2378">ratified</text>
+          </g>
+
+          <!-- nodes -->
+          <g font-family="-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif" font-size="11.5" fill="var(--ink)" text-anchor="middle">
+
+            <!-- 1 -->
+            <rect x="60" y="130" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--crew)" stroke-width="1.6"/>
+            <text x="145" y="155">Order placed</text>
+
+            <!-- 2 BREAK -->
+            <rect x="60" y="188" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="145" y="205">Webhook to Airtable,</text><text x="145" y="219">script matches product</text>
+            <circle cx="222" cy="196" r="5" fill="var(--flag)"/>
+
+            <!-- 3 -->
+            <rect x="60" y="246" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="145" y="263">Table 1 record</text><text x="145" y="277">created</text>
+
+            <!-- 4 -->
+            <rect x="60" y="304" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="145" y="329">Ratification email</text>
+
+            <!-- 5 -->
+            <rect x="290" y="362" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--crew)" stroke-width="1.6"/>
+            <text x="375" y="379">Swimmer submits</text><text x="375" y="393">Pre-Swim Planning</text>
+
+            <!-- 6 -->
+            <rect x="290" y="420" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="437">SWIM ID minted</text><text x="375" y="451">auto-increment</text>
+
+            <!-- 7a calendar -->
+            <rect x="520" y="478" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="605" y="495">Calendar entry for</text><text x="605" y="509">planned swim date</text>
+
+            <!-- 7b next steps -->
+            <rect x="290" y="478" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="495">Next Steps email,</text><text x="375" y="509">evidence standards</text>
+
+            <!-- 9 -->
+            <rect x="980" y="594" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="611">Route measured</text><text x="1065" y="625">manually in Google Maps</text>
+
+            <!-- 10 -->
+            <rect x="980" y="652" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="669">Screenshot emailed</text><text x="1065" y="683">to Quinn</text>
+
+            <!-- 11 -->
+            <rect x="980" y="710" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="735">Quinn decides</text>
+
+            <!-- 12 decision -->
+            <polygon points="298,768 452,768 460,788 452,808 298,808 290,788" fill="var(--surface)" stroke="var(--signal)" stroke-width="2.4"/>
+            <text x="375" y="785">Route review</text><text x="375" y="799">recorded</text>
+
+            <!-- 13 -->
+            <rect x="290" y="826" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="851">Route Approval email</text>
+
+            <!-- 14 -->
+            <rect x="290" y="884" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="901">Observer Agreement</text><text x="375" y="915">assigned, prefilled</text>
+
+            <!-- 15 -->
+            <rect x="290" y="942" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--crew)" stroke-width="1.6"/>
+            <text x="375" y="959">Observer signs</text><text x="375" y="973">agreement, 3 pages</text>
+
+            <!-- 16 decision -->
+            <polygon points="298,1000 452,1000 460,1020 452,1040 298,1040 290,1020" fill="var(--surface)" stroke="var(--signal)" stroke-width="2.4"/>
+            <text x="375" y="1017">Observer review</text><text x="375" y="1031">recorded</text>
+
+            <!-- 17 -->
+            <rect x="290" y="1058" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="1082">Observer Confirmed email</text>
+
+            <!-- 18 -->
+            <rect x="290" y="1116" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="1141">Good luck email</text>
+
+            <!-- 19 the swim -->
+            <rect x="980" y="1174" width="170" height="40" rx="3" fill="var(--crew-soft)" stroke="var(--crew)" stroke-width="2.4"/>
+            <text x="1065" y="1199" font-weight="600">THE SWIM</text>
+
+            <!-- 20 -->
+            <rect x="980" y="1232" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--crew)" stroke-width="1.6"/>
+            <text x="1065" y="1249">Observer logs hourly,</text><text x="1065" y="1263">paper or form</text>
+
+            <!-- 21 -->
+            <rect x="520" y="1290" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="605" y="1307">Admin checks calendar</text><text x="605" y="1321">for passed dates</text>
+
+            <!-- 22 -->
+            <rect x="520" y="1348" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="605" y="1365">Drive folder A created:</text><text x="605" y="1379">swimmer upload space</text>
+
+            <!-- 23 -->
+            <rect x="290" y="1406" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="375" y="1424">Mark swim as</text><text x="375" y="1438">completed</text>
+
+            <!-- 24 -->
+            <rect x="290" y="1464" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="1489">Observer report assigned</text>
+
+            <!-- 25 BREAK -->
+            <rect x="290" y="1522" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--crew)" stroke-width="1.6"/>
+            <text x="375" y="1539">Observer submits,</text><text x="375" y="1553">only Swim ID required</text>
+            <circle cx="452" cy="1530" r="5" fill="var(--flag)"/>
+
+            <!-- 26 -->
+            <rect x="290" y="1580" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="1605">Narrative assigned</text>
+
+            <!-- 27 -->
+            <rect x="290" y="1638" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--crew)" stroke-width="1.6"/>
+            <text x="375" y="1655">Swimmer submits</text><text x="375" y="1669">narrative, headshot</text>
+
+            <!-- 28 BREAK -->
+            <rect x="520" y="1696" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="605" y="1713">Drive folder B collects</text><text x="605" y="1727">form files for admin</text>
+
+            <!-- 29 -->
+            <rect x="980" y="1754" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="1771">Photo metadata read,</text><text x="1065" y="1785">files renamed</text>
+
+            <!-- 30 -->
+            <rect x="980" y="1812" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="1829">Video cut in Camtasia,</text><text x="1065" y="1843">hosted on Vimeo</text>
+
+            <!-- 31 -->
+            <rect x="980" y="1870" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="1887">GPX uploaded, map</text><text x="1065" y="1901">built on ZeroSixZero</text>
+
+            <!-- 32 -->
+            <rect x="980" y="1928" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="1945">Observer log</text><text x="1065" y="1959">transcribed manually</text>
+
+            <!-- 33 -->
+            <rect x="750" y="1986" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="835" y="2003">Ratification page</text><text x="835" y="2017">built, 10 sections</text>
+
+            <!-- 34 -->
+            <rect x="290" y="2044" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="375" y="2061">Committee form cloned</text><text x="375" y="2075">for this swim</text>
+
+            <!-- 35 -->
+            <rect x="750" y="2102" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="835" y="2119">Form embedded, page</text><text x="835" y="2133">published with password</text>
+
+            <!-- 36 -->
+            <rect x="980" y="2160" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="2177">Dispatch email to</text><text x="1065" y="2191">12 committee members</text>
+
+            <!-- 37 -->
+            <rect x="750" y="2218" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--crew)" stroke-width="1.6"/>
+            <text x="835" y="2235">Reviews submitted</text><text x="835" y="2249">on the page</text>
+
+            <!-- 38 -->
+            <rect x="750" y="2276" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="835" y="2293">League Tables and</text><text x="835" y="2307">signatures added</text>
+
+            <!-- 39 decision -->
+            <polygon points="298,2334 452,2334 460,2354 452,2374 298,2374 290,2354" fill="var(--surface)" stroke="var(--signal)" stroke-width="2.4"/>
+            <text x="375" y="2351">Ratified or</text><text x="375" y="2365">Not Ratified recorded</text>
+
+            <!-- 40 -->
+            <rect x="980" y="2392" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="2409">Certificate and cards</text><text x="1065" y="2423">built in Canva</text>
+
+            <!-- 41 -->
+            <rect x="520" y="2450" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="605" y="2467">Certificates subfolder</text><text x="605" y="2481">inside folder A</text>
+
+            <!-- 42 -->
+            <rect x="290" y="2508" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--tide)" stroke-width="1.6"/>
+            <text x="375" y="2533">Confirmation email</text>
+
+            <!-- 43 -->
+            <rect x="980" y="2566" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="2583">Social post built from</text><text x="1065" y="2597">a page screenshot</text>
+
+            <!-- 44 -->
+            <rect x="980" y="2624" width="170" height="40" rx="3" fill="var(--surface)" stroke="var(--signal)" stroke-width="1.6"/>
+            <text x="1065" y="2649">Quinn posts</text>
+
+            <!-- tracker rail -->
+            <rect x="1195" y="130" width="110" height="2534" rx="3" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.6" stroke-dasharray="5 4"/>
+            <text transform="rotate(-90 1250 1397)" x="1250" y="1397" font-size="12" fill="var(--ink)">Airtable Workflow table updated manually at every stage</text>
+          </g>
+        </svg>
+      </div>
+      <figcaption>
+        Forty-four steps across six systems. The orange rail on the right runs the full height because
+        the Airtable tracker is updated manually at every stage, and nothing writes to it. Three branches
+        end the workflow with no route back in. Two Google Drive folders serve different purposes:
+        folder A is the upload space given to the swimmer and observer, folder B collects what came in
+        through the forms and is the working folder for building the page.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section class="band">
+    <h2>Step detail</h2>
+  </section>
+
+  <div class="flow">
+
+    <!-- 1 -->
+    <div class="station is-auto">
+      <div class="marker">01</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>The customer buys a ratification</h3>
+          <div class="meta">
+            <span class="tag sys">WooCommerce</span>
+            <span class="tag auto">Automatic</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            Variable product <code>70664</code> with two variations, Solo <code>102119</code> and
+            Relay <code>102120</code>. No default is set, so the buyer must choose. The listing carries
+            a purchase note linking to Jotform. Three add-ons are offered: Record Attempt,
+            Live Map Tracking, Blog Recap and Social Sharing.
+          </p>
+          <div class="links">
+            <span class="lbl">Product page</span>
+            <a href="https://www.openwaterswimming.com/product/swim-ratification/">https://www.openwaterswimming.com/product/swim-ratification/</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="station is-break">
+      <div class="marker">02</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>The order reaches Airtable</h3>
+          <div class="meta">
+            <span class="tag sys">Airtable &middot; Ratifications Pipeline</span>
+            <span class="tag auto">Automatic</span>
+            <span class="tag break">Currently faulty</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            The <strong>Ratification Order</strong> automation receives a WooCommerce webhook, runs a
+            script that matches on product ID, creates a record in Table 1, and sends the swimmer an
+            email pointing them at the Pre-Swim Planning form.
+          </p>
+          <div class="note">
+            <h4>Broken now</h4>
+            <p>
+              The script step shows <strong>Fix configuration</strong>, the <code>payload</code> input reads
+              <strong>Invalid value</strong>, and the trigger test has failed twice. Two candidate causes:
+              an unfinished attempt to add Solo and Relay handling, and a trigger that never had a
+              sample payload captured. The second predates the first.
+            </p>
+          </div>
+          <div class="note warn">
+            <h4>Two gaps at this step</h4>
+            <p>
+              <strong>Solo and relay are not separated.</strong> The script matches on product ID and
+              never reads the variation, even though both variation IDs arrive on the line item.
+            </p>
+            <p>
+              <strong>Add-ons are not captured.</strong> Fields exist on Table 1 and nothing fills them,
+              so anyone who buys Record Attempt, Live Map Tracking or Blog Recap receives no instructions
+              for what they paid for. An extended script was drafted on 6 August and never applied,
+              because Airtable's API refuses to edit an automation containing a script step.
+            </p>
+          </div>
+          <div class="links">
+            <span class="lbl">Automation</span>
+            <a href="https://airtable.com/appgUjmgd0K8WWp31/wflxdCC6f3GFBBwHq/wac1dXCCGGJzzisj8">airtable.com/appgUjmgd0K8WWp31/wflxdCC6f3GFBBwHq/wac1dXCCGGJzzisj8</a>
+            <span class="lbl" style="margin-top:8px">Table 1, where orders land</span>
+            <a href="https://airtable.com/appgUjmgd0K8WWp31/tblAPf6E4uzRS0oCE">airtable.com/appgUjmgd0K8WWp31/tblAPf6E4uzRS0oCE</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="station is-break">
+      <div class="marker">03</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>The swimmer enters the workflow</h3>
+          <div class="meta">
+            <span class="tag sys">Jotform &middot; Pre-Swim Planning</span>
+            <span class="tag auto">Automatic</span>
+            <span class="tag break">Relay never wired</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            The email link is a plain form URL with no parameters. The swimmer fills it in, and
+            <strong>that submission is what enters them into the workflow</strong>. The
+            <strong>SWIM ID is minted here</strong>, by a hidden auto-increment field feeding a
+            calculation field, currently at index 1060.
+          </p>
+          <p>
+            The workflow trigger is set to start for every submission of the solo form, with no
+            conditions. Two things fire at once: a Google Calendar entry for the planned swim date,
+            and the Next Steps email carrying the GPS, photo, documentation and evidence standards.
+          </p>
+          <div class="note">
+            <h4>Relay has never worked</h4>
+            <p>
+              A Relay Pre-Swim Planning form exists and is connected to nothing. The entry email
+              hardcodes the solo form and the workflow has one trigger. <strong>Every relay
+              ratification to date has run down the solo path.</strong>
+            </p>
+          </div>
+          <div class="note warn">
+            <h4>Nothing joins the order to the submission</h4>
+            <p>
+              The swimmer retypes their name and email. If they use a different address from the one
+              on their order, nothing connects the two records.
+            </p>
+          </div>
+          <div class="links">
+            <span class="lbl">Workflow builder</span>
+            <a href="https://www.jotform.com/workflow/252603334494456/build">jotform.com/workflow/252603334494456/build</a>
+            <span class="lbl" style="margin-top:8px">Pre-Swim Planning, solo</span>
+            <a href="https://www.jotform.com/210815057331043">jotform.com/210815057331043</a>
+            <span class="lbl" style="margin-top:8px">Relay Pre-Swim Planning, unconnected</span>
+            <a href="https://www.jotform.com/251746582157161">jotform.com/251746582157161</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="station is-manual">
+      <div class="marker">04</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Route review</h3>
+          <div class="meta">
+            <span class="tag sys">Jotform approval &middot; Google Maps &middot; email</span>
+            <span class="tag manual">Manual</span>
+            <span class="tag who">Quinn decides, Rose records</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>What the builder shows and what happens are different things.</p>
+          <ul class="steps">
+            <li>The approval request lands in the shared admin mailbox</li>
+            <li>Rose takes the start and finish coordinates off the submission manually</li>
+            <li>Rose measures the route in <strong>Google Maps</strong> and screenshots it</li>
+            <li>Rose emails the screenshot to Quinn, subject "Route for Approval SWIM-XXXX"</li>
+            <li>Quinn replies with his decision</li>
+            <li>Rose clicks Approve or Deny to record it</li>
+          </ul>
+          <div class="note info">
+            <h4>The measured distance has nowhere to live</h4>
+            <p>
+              It exists as pixels in a screenshot and a number in an email thread. It is not a value
+              on any record.
+            </p>
+          </div>
+          <div class="branch">
+            <div class="yes">
+              <h5>Approved</h5>
+              <p>Route Approval email to the swimmer. Continues. The email never states that route approval is not ratification.</p>
+            </div>
+            <div class="no">
+              <h5>Denied</h5>
+              <p>Route Review Outcome email carrying the approver's reason, then the <strong>workflow ends</strong>. The email invites a resubmission, which mints a new SWIM ID for the same swim with nothing linking them.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="station is-manual">
+      <div class="marker">05</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Independent Observer Agreement</h3>
+          <div class="meta">
+            <span class="tag sys">Jotform</span>
+            <span class="tag auto">Assigned automatically</span>
+            <span class="tag manual">Reviewed manually</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            The observer named on the planning form is assigned directly, with prefill on. Three pages,
+            three signatures: Roles and Responsibilities, Rules of Engagement, Conflict of Interest.
+            Rose reviews and decides this one herself, with no consultation.
+          </p>
+          <div class="note">
+            <h4>Two defects on this form</h4>
+            <p>
+              The link labelled "WOWSA Marathon Swimming Rules &amp; Regulations" points at the observer
+              form itself. Observers sign an undertaking that they have read the rules, via a link that
+              returns them to the page they are on.
+            </p>
+            <p>
+              <strong>Assisted versus unassisted is declared by the observer, not the swimmer.</strong>
+              That question is hidden on the planning form, so the applicant never states it, and the
+              category that determines record eligibility is set by the person verifying.
+            </p>
+          </div>
+          <p>
+            On approval, an <strong>Observer Confirmed</strong> email goes to Quinn, the observer and the
+            swimmer together, since Jotform has no CC. Then a good luck email to the swimmer, which
+            fires now rather than near the swim.
+          </p>
+          <div class="links">
+            <span class="lbl">Independent Observer Agreement</span>
+            <a href="https://www.jotform.com/251242794026152">jotform.com/251242794026152</a>
+            <span class="lbl" style="margin-top:8px">Observer Log, online option</span>
+            <a href="https://www.jotform.com/253011354070038">jotform.com/253011354070038</a>
+            <span class="lbl" style="margin-top:8px">Observer Log, fillable PDF</span>
+            <a href="https://drive.google.com/file/d/16giaPcBLVsjcByetPcxsJ-LevxLSpc8F/view">drive.google.com/file/d/16giaPcBLVsjcByetPcxsJ-LevxLSpc8F</a>
+            <span class="lbl" style="margin-top:8px">Observer Log, printable PDF</span>
+            <a href="https://drive.google.com/file/d/19s7pUCNOAuFFznvFnz7_EzIu3LZN9JhF/view">drive.google.com/file/d/19s7pUCNOAuFFznvFnz7_EzIu3LZN9JhF</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="station is-manual">
+      <div class="marker">06</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Swim Completed</h3>
+          <div class="meta">
+            <span class="tag sys">Google Calendar &middot; Google Drive &middot; Jotform task</span>
+            <span class="tag manual">Manual</span>
+            <span class="tag break">Invisible to the swimmer</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>This is the point where a person becomes the clock.</p>
+          <ul class="steps">
+            <li>Notice from the calendar that a swim date has passed</li>
+            <li>Create the swim's Drive folder manually, named <code>SWIM-XXXX Firstname Lastname</code></li>
+            <li>Copy in the template subfolders from the local set</li>
+            <li>Mark the Jotform task complete</li>
+          </ul>
+          <div class="note">
+            <h4>Nothing moves until someone looks</h4>
+            <p>
+              <strong>Until this task is marked complete, the swimmer and observer cannot submit their
+              post-swim documentation.</strong> They have finished the swim, they were told links would
+              arrive, and nothing happens. From their side it is indistinguishable from being forgotten.
+            </p>
+            <p>
+              There is no queue of swims whose dates have passed, no reminder, and no list to work from.
+              The calendar also holds the date as declared at planning, which may be months old.
+            </p>
+          </div>
+          <div class="links">
+            <span class="lbl">Drive folder A, the swimmer and observer upload space, one per swim</span>
+            <a href="https://drive.google.com/drive/folders/[DRIVE_FOLDER_A]">drive.google.com/drive/folders/[DRIVE_FOLDER_A]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 -->
+    <div class="station is-break">
+      <div class="marker">07</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Post-swim documentation</h3>
+          <div class="meta">
+            <span class="tag sys">Jotform &middot; Google Drive</span>
+            <span class="tag auto">Assigned automatically</span>
+            <span class="tag break">Nothing is verified</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            The observer report is assigned first. Only once it comes back is the swimmer's narrative
+            assigned. They run in sequence because <strong>Jotform ends the whole workflow if one of two
+            parallel branches completes</strong>, which was tested. So a swimmer who is home and ready
+            to write waits on an observer, for no reason connected to either task.
+          </p>
+          <div class="note">
+            <h4>Only one field on the observer report is required</h4>
+            <p>
+              And it is the Swim ID. Not the GPS data. Not the observer log. Not the photographs or the
+              start and finish videos. Not the times, coordinates, elapsed time or distances. Not the
+              observer's attestation signature.
+            </p>
+            <p>
+              The Drive folder is offered as an optional file drop and Jotform cannot see into it. So the
+              workflow can mark this step done while the evidence packet is empty, and every completeness
+              check is Rose opening the folder and noticing.
+            </p>
+          </div>
+          <div class="note warn">
+            <h4>The swimmer narrative barely links back</h4>
+            <p>
+              Swim ID is <strong>not required</strong> there, has no input mask, and prefill is off on that
+              node. Uploads across both forms are capped near 10 MB, and observers are told to email
+              oversized GPS files directly, which puts the most important evidence outside the system.
+            </p>
+          </div>
+          <div class="links">
+            <span class="lbl">Post-Swim Observer Report</span>
+            <a href="https://www.jotform.com/252602743229455">jotform.com/252602743229455</a>
+            <span class="lbl" style="margin-top:8px">Post-Swim Swimmer Narrative</span>
+            <a href="https://www.jotform.com/252386318465161">jotform.com/252386318465161</a>
+            <span class="lbl" style="margin-top:8px">Drive folder B, form files collected for admin</span>
+            <a href="https://drive.google.com/drive/folders/[DRIVE_FOLDER_B]">drive.google.com/drive/folders/[DRIVE_FOLDER_B]</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 -->
+    <div class="station is-manual">
+      <div class="marker">08</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Build the ratification page</h3>
+          <div class="meta">
+            <span class="tag sys">WordPress &middot; Camtasia &middot; Vimeo &middot; ZeroSixZero &middot; Drive</span>
+            <span class="tag manual">Manual, days of work</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            In the Jotform builder this is one task called Complete Ratification Page, with an empty
+            description and a single outcome. Behind it:
+          </p>
+          <ul class="steps">
+            <li>Open every photograph, read its metadata timestamp, rename the file to that timestamp</li>
+            <li>Assemble the video in Camtasia with the standing title template, upload to Vimeo, configure the player to hide everything but play and volume</li>
+            <li>Upload the GPX to ZeroSixZero as a Route, create a map, add it to Live Tracks and Map Layers</li>
+            <li>Transcribe the observer log entry by entry in the code editor, around seventy per swim</li>
+            <li>Write and assemble ten page sections, choosing the photographs for each</li>
+            <li>Link every submitted document from Drive manually</li>
+          </ul>
+          <div class="note">
+            <h4>The evidence standard depends on metadata the collection method destroys</h4>
+            <p>
+              Photo timestamps are the source of truth. Photos routinely arrive stripped, because they
+              were passed between devices or re-saved. Both workflow emails warn about this in detail and
+              it happens anyway. Real time capture forms were tried and did not hold.
+            </p>
+          </div>
+          <div class="links">
+            <span class="lbl">Ratifications site, separate WordPress install</span>
+            <a href="https://openwaterswimming.com/ratifications/wp-admin/">openwaterswimming.com/ratifications/wp-admin/</a>
+            <span class="lbl" style="margin-top:8px">Example published page</span>
+            <a href="https://openwaterswimming.com/ratifications/swim-1039-nicholas-bufton/">openwaterswimming.com/ratifications/swim-1039-nicholas-bufton/</a>
+            <span class="lbl" style="margin-top:8px">Example ZeroSixZero map</span>
+            <a href="https://zerosixzero.com/worldopenwater/swim-1055-hector-pardoe-08-10-2026">zerosixzero.com/worldopenwater/swim-1055-hector-pardoe-08-10-2026</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 -->
+    <div class="station is-manual">
+      <div class="marker">09</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Committee review</h3>
+          <div class="meta">
+            <span class="tag sys">Jotform &middot; WordPress &middot; email</span>
+            <span class="tag manual">Manual</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            The committee form is <strong>cloned manually for every swim</strong>, because Jotform caps
+            submissions per form and a review needs to close at three. Rose edits the Swim ID and
+            Swimmer Name defaults on each copy, embeds it in the page's Committee Review section,
+            publishes the post private with a password, and emails that link out.
+          </p>
+          <div class="note info">
+            <h4>The committee reviews the page, not a summary</h4>
+            <p>
+              A reviewer opens one page, reads the full ratification, and submits their determination
+              from the bottom of it. This already works the way a reviewing body should.
+            </p>
+          </div>
+          <div class="note warn">
+            <h4>Twelve people are asked, three reviews are needed</h4>
+            <p>
+              Nobody is assigned. Whichever three respond first decide that swim. The password is one
+              static string, <code>[COMMITTEE_PASSWORD]</code>, sent to all twelve alongside a list of
+              which swims are pending.
+            </p>
+          </div>
+          <p>
+            Each reviewer gives a <strong>four-point assessment</strong> on photo and video evidence,
+            observer logs, GPS tracks, and an overall recommendation, with notes on each. Three reviewers
+            produce twelve graded assessments.
+          </p>
+          <p>
+            Once all three are in, Rose builds two League Table entries manually, types in the committee
+            names, uploads their signatures, deletes the embedded form and inserts the tables.
+          </p>
+          <div class="note">
+            <h4>The grading does not survive publication</h4>
+            <p>
+              The published table shows a tick. "Approve with qualifications" and "Approve, no issues"
+              look identical, and every note a reviewer wrote lives only inside the Jotform submission.
+            </p>
+          </div>
+          <div class="links">
+            <span class="lbl">Committee form template</span>
+            <a href="https://www.jotform.com/252415408134147">jotform.com/252415408134147</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 10 -->
+    <div class="station is-manual">
+      <div class="marker">10</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Ratified or Not Ratified</h3>
+          <div class="meta">
+            <span class="tag sys">Jotform approval</span>
+            <span class="tag manual">Manual</span>
+            <span class="tag who">Records the committee's outcome</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            The approval email says it plainly: "Please update committee decision below." This node is
+            where an outcome reached elsewhere gets transcribed so the workflow can branch.
+          </p>
+          <div class="note">
+            <h4>This is where twelve assessments become one word</h4>
+            <p>
+              Rose reads all of it and converts it into Ratified or Not Ratified using judgment. There is
+              no rule, no threshold, no tie-break, and no record of the reasoning beyond an optional
+              comment. <strong>Nobody has ever written down what combination of assessments ratifies a
+              swim.</strong>
+            </p>
+            <p>Require Login is off, so this can be recorded by clicking a button in an email.</p>
+          </div>
+          <div class="branch">
+            <div class="yes">
+              <h5>Ratified</h5>
+              <p>Certificate and socials task, then the confirmation email, then the workflow ends.</p>
+            </div>
+            <div class="no">
+              <h5>Not Ratified</h5>
+              <p>One email, then the workflow ends. It offers a 30 day appeal with no path back in, and points the swimmer to the page for "the committee's full notes", which shows ticks.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 11 -->
+    <div class="station is-manual">
+      <div class="marker">11</div>
+      <div class="card">
+        <div class="card-head">
+          <h3>Certificate, cards and the social post</h3>
+          <div class="meta">
+            <span class="tag sys">Canva &middot; Google Drive &middot; Jotform</span>
+            <span class="tag manual">Manual</span>
+            <span class="tag break">Diverged from the workflow</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p>
+            Assets are made manually in Canva. A new subfolder called "certificate and social cards" goes
+            inside the swim's Drive folder, the link is pasted into the Jotform task, and the confirmation
+            email goes out. The final social post is assembled from a <strong>screenshot of the finished
+            ratification page</strong>, with the details retyped underneath. Everything then goes to Quinn,
+            who handles the posting.
+          </p>
+          <div class="note">
+            <h4>The built workflow no longer matches the agreed process</h4>
+            <p>
+              Quinn agreed that Not Ratified swims should still receive a certificate and social assets,
+              published as a <strong>"verified attempt"</strong>. That step could not be added to the
+              workflow, so it is done manually over email. Anyone reading the builder today would conclude
+              a Not Ratified swimmer gets an email and nothing else.
+            </p>
+          </div>
+          <div class="tablewrap">
+            <table>
+              <thead><tr><th>Asset</th><th>Outcome</th><th>Canva template</th></tr></thead>
+              <tbody>
+                <tr><td>Certificate</td><td>Ratified</td><td class="m"><a href="[CANVA_URL]">DAGyVKbc8Bg</a></td></tr>
+                <tr><td>Social card</td><td>Ratified</td><td class="m"><a href="[CANVA_URL]">DAG3VNZGAbk</a></td></tr>
+                <tr><td>Social post</td><td>Ratified</td><td class="m"><a href="[CANVA_URL]">DAHMaoY9LIM</a></td></tr>
+                <tr><td>Social card</td><td>Verified attempt</td><td class="m"><a href="[CANVA_URL]">DAGyF5GZEmY</a></td></tr>
+                <tr><td>Social post</td><td>Verified attempt</td><td class="m"><a href="[CANVA_URL]">DAG8Xnc_X3o</a></td></tr>
+                <tr><td>Story format, role unconfirmed</td><td>&mdash;</td><td class="m"><a href="[CANVA_URL]">DAGyUx3Sbz4</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="note warn">
+            <h4>Three problems in the confirmation email</h4>
+            <p>
+              The distance quoted is the <strong>GPS track distance, not the straight-line tangent</strong>,
+              in a message headed RATIFICATION SUMMARY. WOWSA's standard is the tangent, and that figure
+              is collected on the observer report but not used.
+            </p>
+            <p>
+              It says "I've copied the ratification committee" and the recipient list is the swimmer alone.
+              It also labels the identifier <strong>RAT #</strong> and fills it with the SWIM ID, which is
+              worth knowing before anyone proposes minting a separate ratification number.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ---------- the spine ---------- -->
+  <section class="band">
+    <h2>The thread that runs underneath</h2>
+    <p class="lede">
+      Throughout every step above, the Workflow table in Airtable is updated <strong>entirely by
+      hand</strong>. The order automation writes to a different table. Jotform does not write to it.
+      Drive does not write to it. Every status is typed in by a person after doing the work somewhere
+      else, which makes it a parallel account of the process rather than the process itself. It is also
+      what a swimmer's status gets checked against when they ask where their ratification stands.
+    </p>
+    <div class="links" style="margin-top:16px">
+      <span class="lbl">Workflow table</span>
+      <a href="https://airtable.com/appgUjmgd0K8WWp31/tblulYhWIpP0E3eov/viwiwpHCyoiqn5lCC">airtable.com/appgUjmgd0K8WWp31/tblulYhWIpP0E3eov/viwiwpHCyoiqn5lCC</a>
+    </div>
+  </section>
+
+  <!-- ---------- limits ---------- -->
+  <section class="band">
+    <h2>Three things the tooling cannot do</h2>
+    <p class="lede">
+      These are hard limits, not things that were never set up. Each one is already the cause of manual
+      work described above.
+    </p>
+    <div class="grid">
+      <div class="issue">
+        <span class="sev">Platform limit</span>
+        <h4>No scheduling against a date</h4>
+        <p>
+          Every email fires on an event, never on a date. So the good luck message arrives when the
+          observer agreement clears rather than before the swim, there is no reminder on the 30 day
+          deadline, no nudge when a case stalls, and no way to detect a broken case, because detecting
+          one means noticing that time has passed.
+        </p>
+      </div>
+      <div class="issue">
+        <span class="sev">Platform limit</span>
+        <h4>No parallel steps</h4>
+        <p>
+          Tested, not assumed. Building the post-swim observer report and swimmer narrative as parallel
+          branches ended the workflow as soon as one completed. The long single chain is not a design
+          decision, it is the only shape available.
+        </p>
+      </div>
+      <div class="issue">
+        <span class="sev">Platform limit</span>
+        <h4>No CC or BCC</h4>
+        <p>
+          Copying anyone means listing them as a direct recipient. On the Observer Confirmed email that
+          puts Quinn, the observer and the swimmer in one To line, visible to each other.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- silent failures ---------- -->
+  <section class="band">
+    <h2>Where it fails without telling anyone</h2>
+    <p class="lede">
+      In each of these the system reports success and a person has to know better.
+    </p>
+    <div class="grid">
+      <div class="issue">
+        <span class="sev">Highest risk</span>
+        <h4>The assigned link is the only thread</h4>
+        <p>
+          Everyone must use the form link in the email they were sent. Use the public URL, a bookmark or
+          a forwarded link and the submission lands outside the workflow instance. The case then waits
+          forever for something that will never arrive, and a broken case looks exactly like a slow one.
+        </p>
+      </div>
+      <div class="issue">
+        <span class="sev">Highest risk</span>
+        <h4>Evidence can be entirely absent</h4>
+        <p>
+          The observer report requires nothing but a Swim ID, and Jotform cannot see into the Drive
+          folder. A swim can reach committee review with an empty evidence packet and nothing in the
+          system will say so.
+        </p>
+      </div>
+      <div class="issue med">
+        <span class="sev">Structural</span>
+        <h4>Denials and appeals have no way back</h4>
+        <p>
+          A route denial ends the workflow and a corrected plan returns as a new submission with a new
+          SWIM ID. A Not Ratified decision ends the workflow and offers a 30 day appeal that has nowhere
+          to go. Both invite a next step and close the door behind themselves.
+        </p>
+      </div>
+      <div class="issue med">
+        <span class="sev">Structural</span>
+        <h4>No amendment trail</h4>
+        <p>
+          The confirmation email says "if you'd like any tweaks to the page or assets, just reply here."
+          Corrections after publication arrive as replies and are handled manually, with no record of what
+          changed or when.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ---------- systems index ---------- -->
+  <section class="band">
+    <h2>Systems index</h2>
+    <p class="lede">Everything a single ratification touches, and where it lives.</p>
+    <div class="tablewrap" style="margin-top:24px">
+      <table>
+        <thead><tr><th>System</th><th>Role</th><th>Reference</th></tr></thead>
+        <tbody>
+          <tr><td>WooCommerce</td><td>Purchase, Solo and Relay variations</td><td class="m"><a href="https://www.openwaterswimming.com/product/swim-ratification/">Product 70664</a></td></tr>
+          <tr><td>Airtable</td><td>Order intake and the manual Workflow tracker</td><td class="m"><a href="https://airtable.com/appgUjmgd0K8WWp31">appgUjmgd0K8WWp31</a></td></tr>
+          <tr><td>Jotform</td><td>Identity, prefill, forms, approvals, the workflow itself</td><td class="m"><a href="https://www.jotform.com/workflow/252603334494456/build">Workflow 252603334494456</a></td></tr>
+          <tr><td>Google Calendar</td><td>Planned swim date, the only signal a swim has happened</td><td class="m">contact@openwaterswimming.com</td></tr>
+          <tr><td>Google Drive, folder A</td><td>Upload space given to the swimmer and observer, plus the certificates subfolder</td><td class="m"><a href="https://drive.google.com/drive/folders/[DRIVE_FOLDER_A]">[DRIVE_FOLDER_A]</a></td></tr>
+          <tr><td>Google Drive, folder B</td><td>Files that came in through the forms, the working folder for building the page</td><td class="m"><a href="https://drive.google.com/drive/folders/[DRIVE_FOLDER_B]">[DRIVE_FOLDER_B]</a></td></tr>
+          <tr><td>WordPress</td><td>Ratification pages, separate install from the main site</td><td class="m"><a href="https://openwaterswimming.com/ratifications/wp-admin/">/ratifications/</a></td></tr>
+          <tr><td>ZeroSixZero</td><td>GPX routes and embedded maps</td><td class="m"><a href="https://zerosixzero.com/worldopenwater/swim-1055-hector-pardoe-08-10-2026">Example map</a></td></tr>
+          <tr><td>Camtasia</td><td>Video assembly and title template</td><td class="m">Local</td></tr>
+          <tr><td>Vimeo</td><td>Video hosting, hidden but embeddable</td><td class="m">Per swim</td></tr>
+          <tr><td>Canva, certificate</td><td>Ratified</td><td class="m"><a href="[CANVA_URL]">see PRIVATE.md</a></td></tr>
+          <tr><td>Canva, social card</td><td>Ratified</td><td class="m"><a href="[CANVA_URL]">see PRIVATE.md</a></td></tr>
+          <tr><td>Canva, social post</td><td>Ratified</td><td class="m"><a href="[CANVA_URL]">see PRIVATE.md</a></td></tr>
+          <tr><td>Canva, social card</td><td>Verified attempt</td><td class="m"><a href="[CANVA_URL]">see PRIVATE.md</a></td></tr>
+          <tr><td>Canva, social post</td><td>Verified attempt</td><td class="m"><a href="[CANVA_URL]">see PRIVATE.md</a></td></tr>
+          <tr><td>Canva, story format</td><td>Role unconfirmed</td><td class="m"><a href="[CANVA_URL]">see PRIVATE.md</a></td></tr>
+          <tr><td>Gmail</td><td>Route approval thread, committee dispatch, chasing, appeals</td><td class="m">contact@openwaterswimming.com</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Recorded 16 August 2026</span>
+    <span>Source: walkthrough of the live systems</span>
+    <span>Swimmer names, addresses and order numbers deliberately omitted</span>
+  </footer>
+
+</div>
