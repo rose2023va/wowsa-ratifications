@@ -70,6 +70,27 @@ customer facing message, short of sending a second separate email.
 
 ---
 
+## Field conditions
+
+Not a tooling limit, but it constrains solutions just as hard.
+
+**Nothing captured during a swim can depend on being connected.** A crew is on a boat in open
+water. There is often no internet and frequently no laptop.
+
+Two things have already been built and tested against this and neither held up:
+
+1. An **online observer log** intended to capture entries live during the swim
+2. A **real time photo submission form** intended to capture timestamps at the moment of capture
+
+Both failed for the same reason. Any proposal that involves the crew submitting something while
+the swim is happening will fail the same way.
+
+What this leaves: the observer records on paper or in a fillable PDF, and the evidence is
+submitted afterwards. Improvements have to work on what arrives after the fact, not on capturing
+it live.
+
+---
+
 ## Related, not a platform limit
 
 **Airtable will not let the API edit an automation that contains a script step.** An attempt to

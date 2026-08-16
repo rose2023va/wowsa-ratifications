@@ -90,21 +90,27 @@ Three defects also disappear structurally rather than being fixed:
 
 ### What becomes automatic
 
-| Stage | Today | After | How |
+Most of this is ordinary automation rather than AI. Only four rows genuinely need a Claude agent:
+reading the observer log, writing the introduction, drafting chase emails, and producing the Canva
+assets. Everything else is Airtable or Lovable doing what they already do.
+
+
+| Stage | Today | After | How, and what does it |
 |---|---|---|---|
-| Order and intake | Automatic, but add-ons and solo versus relay are lost | Automatic and complete | The order webhook writes the full line item, including the variation and any add-ons, straight onto the record |
-| Route distance | Measured in Google Maps, screenshotted, emailed | Calculated from the coordinates and written to the record | Airtable calls the distance service with the start and finish coordinates and stores both figures |
-| Route approval | Emailed to Quinn, reply, then recorded separately | Quinn approves in one place and it records itself | The decision and the record become the same action, taken from the notification itself |
-| Knowing the swim happened | Manual calendar check | Automatic | A scheduled check looks for swim dates that have passed and moves those records on |
-| Folders and file collection | One folder made manually, one automatic | Both automatic | The swim folder is created from the template on clearance, and every uploaded file lands in it |
-| Checking evidence is complete | Opening folders and noticing | Flagged automatically, with the chase email drafted | The record tests itself for GPS, log, photos and video, and anything incomplete collects in one view |
-| Observer log | Every entry retyped | Held as data and rendered on the page | The observer logs into a form that writes one row per timestamp, so the log arrives already structured |
-| Building the page | Assembled manually across six systems | The page is the record. Nothing to assemble | Lovable reads the record and renders it. There is no build step to perform |
-| Committee form | Cloned, edited and embedded per swim | No form to clone | The review sits on the record itself, with access granted per member rather than per form |
-| Committee dispatch and chasing | Email written manually, reviews counted manually | Automatic, with reminders to whoever has not responded | Reviews are counted as they arrive, and reminders go only to the people still outstanding |
-| Publishing the result | Two tables built manually, form removed, names and signatures added | Renders from the reviews as they arrive | The determination panel reads the review records directly, so nothing is transcribed |
-| Certificates and social cards | Made manually for every ratification | Generated from the record | Canva templates are filled from the record and exported into the swim folder |
-| Status tracking | Typed in at every stage | The record is the status | Each stage is written by whatever step performed it, so there is nothing to keep in sync |
+| Order and intake | Automatic, but add-ons and solo versus relay are lost | Automatic and complete | **Airtable automation.** The order webhook writes the full line item, including the variation and any add-ons, straight onto the record |
+| Route distance | Measured in Google Maps, screenshotted, emailed | Calculated from the coordinates and written to the record | **Airtable automation calling the distance service.** No AI involved, it is a calculation |
+| Route approval | Emailed to Quinn, reply, then recorded separately | Quinn approves in one place and it records itself | **Airtable interface.** Quinn sees the route, the distance and any flags on one screen and approves there |
+| Knowing the swim happened | Manual calendar check | Automatic | **Airtable scheduled automation.** Runs daily, finds swim dates that have passed, moves those records on |
+| Folders and file collection | One folder made manually, one automatic | Both automatic | **Airtable automation into Google Drive.** The swim folder is created from the template on clearance |
+| Checking evidence is complete | Opening folders and noticing | Flagged automatically, with the chase email drafted | **Airtable formula and view** for what is missing. **A Claude agent** writes the chase email, because the wording depends on who is being chased and why |
+| Observer log | Every entry retyped | Read from the submitted log, held as data | **A Claude agent.** Reads the paper or PDF log the observer actually produced and extracts each timestamped entry. Genuine AI work, not automation |
+| The introduction | Generated, then placed manually | Generated onto the record | **A Claude agent** against the existing tone, flow and wording rules |
+| Building the page | Assembled manually across six systems | The page is the record. Nothing to assemble | **Lovable.** Reads the record and renders it. There is no build step to perform |
+| Committee form | Cloned, edited and embedded per swim | No form to clone | **Lovable.** The review sits on the record, with access granted per member rather than per form |
+| Committee dispatch and chasing | Email written manually, reviews counted manually | Automatic, with reminders to whoever has not responded | **Airtable automation.** Counts reviews as they arrive and reminds only the people still outstanding |
+| Publishing the result | Two tables built manually, form removed, names and signatures added | Renders from the reviews as they arrive | **Lovable.** The determination panel reads the review records directly |
+| Certificates and social cards | Made manually for every ratification | Generated from the record | **A Claude agent driving Canva.** Fills the templates from the record and exports into the swim folder |
+| Status tracking | Typed in at every stage | The record is the status | **Airtable.** Each stage is written by whatever step performed it, so there is nothing to keep in sync |
 
 ### What still needs a person
 
@@ -116,6 +122,7 @@ Five things. These are the parts where WOWSA's judgment is the product, not the 
 | Judgment | **The committee's assessment** | Three people deciding whether a swim meets the standard. This is what WOWSA is for |
 | Judgment | **Whether evidence is credible** | A system can confirm a photograph exists and carries a timestamp. It cannot judge whether the photograph shows the swim |
 | Judgment | **Borderline threshold calls** | Whether an observer's role genuinely overlaps a crew role is not a pass or fail check |
+| Field conditions | **Capturing anything live during a swim** | Already tried, twice. An online observer log and a real time photo submission form were both built and tested. Crews are in open water with no internet and often no laptop. Nothing captured during a swim can depend on being connected |
 | Craft | **The video, and choosing the photographs** | Which moments carry a swim is an editorial decision. The video is also cut in desktop software that nothing can reach |
 
 **Turning the committee's assessments into a determination also stays with a person.** It is not a
@@ -127,7 +134,7 @@ rule waiting to be written down.
 
 | # | Recommendation | Why |
 |---|---|---|
-| 1 | Let observers log the swim in a form that feeds the record directly | Removes the retyping of every log entry, the single largest repeated task in the process. Neither plan mentions the observer log at all |
+| 1 | Extract the observer log from whatever the observer submits, rather than retyping it | The largest repeated task in the process. **Note:** an online observer log and a real time photo submission form were both built and tested already, and neither held up. Crews are on a boat in open water with no internet, often no laptop. The answer is not another live form, it is reading the paper or PDF log the observer actually produced |
 | 2 | Generate certificates and social assets from the record | Certificates appear nowhere in the proposal |
 | 3 | Make the distance service the single source for both distance figures | Removes the manual measurement, fixes the wrong figure currently quoted to swimmers, and is what a versioned methodology needs to sit on. **In progress.** The service is built; circumnavigation routes still need work with Anthony at ZeroSixZero. https://github.com/rose2023va/wowsa-distance-calculator |
 | 4 | Score evidence completeness on the record | Answers "is this ready for the committee" without anyone opening a folder, and without changing what the forms ask for |
