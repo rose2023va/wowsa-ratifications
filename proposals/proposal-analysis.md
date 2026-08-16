@@ -90,6 +90,13 @@ Three defects also disappear structurally rather than being fixed:
 
 ### What becomes automatic
 
+**What Claude can and cannot be asked to do.** A Claude agent cannot sit and wait for something to
+happen. It is not a webhook target and not a service. Anything that has to react the moment a form
+arrives, an order lands or a date passes belongs to Airtable, which is always on. Claude works on a
+queue: Airtable notices something and collects it into a view, and Claude works through that batch
+on a schedule or when asked. Useful for judgment and drafting. Not something to put underneath a
+trigger that has to fire reliably.
+
 Most of this is ordinary automation rather than AI. Only four rows genuinely need a Claude agent:
 reading the observer log, writing the introduction, drafting chase emails, and producing the Canva
 assets. Everything else is Airtable or Lovable doing what they already do.
@@ -100,10 +107,10 @@ assets. Everything else is Airtable or Lovable doing what they already do.
 | Order and intake | Automatic, but add-ons and solo versus relay are lost | Automatic and complete | **Airtable automation.** The order webhook writes the full line item, including the variation and any add-ons, straight onto the record |
 | Route distance | Measured in Google Maps, screenshotted, emailed | Calculated from the coordinates and written to the record | **Airtable automation calling the distance service.** No AI involved, it is a calculation |
 | Route approval | Emailed to Quinn, reply, then recorded separately | Quinn approves in one place and it records itself | **Airtable interface.** Quinn sees the route, the distance and any flags on one screen and approves there |
-| Knowing the swim happened | Manual calendar check | Automatic | **Airtable scheduled automation.** Runs daily, finds swim dates that have passed, moves those records on |
+| Knowing the swim happened | Manual calendar check | Automatic | **Airtable scheduled automation.** Runs daily, finds swim dates that have passed, moves those records on. This must be Airtable rather than Claude, because it has to run whether or not anything else is running |
 | Folders and file collection | One folder made manually, one automatic | Both automatic | **Airtable automation into Google Drive.** The swim folder is created from the template on clearance |
 | Checking evidence is complete | Opening folders and noticing | Flagged automatically, with the chase email drafted | **Airtable formula and view** for what is missing. **A Claude agent** writes the chase email, because the wording depends on who is being chased and why |
-| Observer log | Every entry retyped | Read from the submitted log, held as data | **A Claude agent.** Reads the paper or PDF log the observer actually produced and extracts each timestamped entry. Genuine AI work, not automation |
+| Observer log | Every entry retyped | Only solvable with an offline capable form | **Nothing yet.** Live capture and AI transcription have both been tried and neither worked. This stays manual until a form exists that works without signal. See the note under the recommendations |
 | The introduction | Generated, then placed manually | Generated onto the record | **A Claude agent** against the existing tone, flow and wording rules |
 | Building the page | Assembled manually across six systems | The page is the record. Nothing to assemble | **Lovable.** Reads the record and renders it. There is no build step to perform |
 | Committee form | Cloned, edited and embedded per swim | No form to clone | **Lovable.** The review sits on the record, with access granted per member rather than per form |
@@ -122,7 +129,7 @@ Five things. These are the parts where WOWSA's judgment is the product, not the 
 | Judgment | **The committee's assessment** | Three people deciding whether a swim meets the standard. This is what WOWSA is for |
 | Judgment | **Whether evidence is credible** | A system can confirm a photograph exists and carries a timestamp. It cannot judge whether the photograph shows the swim |
 | Judgment | **Borderline threshold calls** | Whether an observer's role genuinely overlaps a crew role is not a pass or fail check |
-| Field conditions | **Capturing anything live during a swim** | Already tried, twice. An online observer log and a real time photo submission form were both built and tested. Crews are in open water with no internet and often no laptop. Nothing captured during a swim can depend on being connected |
+| Field conditions | **Capturing anything live during a swim** | Already tried, twice. Rose built both an online observer log and a real time media submission form that captured timestamps at the point of capture. Both were field tested and neither held up. Crews are in open water with no internet and often no laptop |
 | Craft | **The video, and choosing the photographs** | Which moments carry a swim is an editorial decision. The video is also cut in desktop software that nothing can reach |
 
 **Turning the committee's assessments into a determination also stays with a person.** It is not a
@@ -134,7 +141,7 @@ rule waiting to be written down.
 
 | # | Recommendation | Why |
 |---|---|---|
-| 1 | Extract the observer log from whatever the observer submits, rather than retyping it | The largest repeated task in the process. **Note:** an online observer log and a real time photo submission form were both built and tested already, and neither held up. Crews are on a boat in open water with no internet, often no laptop. The answer is not another live form, it is reading the paper or PDF log the observer actually produced |
+| 1 | An offline capable observer log form \* | Retyping the log is the largest repeated task in the process. A form is still the right answer, but it has to hold entries on the device and upload when the crew is back in signal. See the note below |
 | 2 | Generate certificates and social assets from the record | Certificates appear nowhere in the proposal |
 | 3 | Make the distance service the single source for both distance figures | Removes the manual measurement, fixes the wrong figure currently quoted to swimmers, and is what a versioned methodology needs to sit on. **In progress.** The service is built; circumnavigation routes still need work with Anthony at ZeroSixZero. https://github.com/rose2023va/wowsa-distance-calculator |
 | 4 | Score evidence completeness on the record | Answers "is this ready for the committee" without anyone opening a folder, and without changing what the forms ask for |
@@ -142,6 +149,26 @@ rule waiting to be written down.
 | 6 | Remind committee members who have not responded | Chasing reviews is currently manual and batched. It should be a nudge per person per swim |
 | 7 | Send add-on instructions automatically on purchase | People are paying for add-ons today and receiving nothing |
 | 8 | Keep one identifier, not three | SWIM ID is already public, already in every URL, and the confirmation email already presents it as the ratification number. Adding two more namespaces creates work without answering a question anyone is asking |
+
+### \* What has already been tried on the observer log, and why each failed
+
+This is not an unexplored idea. Rose built and field tested two of the three approaches below
+before any of this analysis existed.
+
+**1. An online observer log form, built by Rose.** Intended to capture entries live during the
+swim. Failed on connectivity. The crew is on a boat in open water, usually with no internet and
+often no laptop.
+
+**2. A real time media submission form, built by Rose,** capturing photograph timestamps at the
+moment of capture rather than relying on metadata surviving the journey afterwards. Failed for the
+same reason, and could not be made consistent.
+
+**3. AI transcription of the paper or PDF log.** Tested and not accurate enough to rely on for an
+evidence record.
+
+**What this leaves.** The form was the right instinct and it failed on one specific thing, which is
+the assumption of a live connection. A form that stores entries on the device and uploads when
+signal returns has not been tried, and is the only version of this that has not already failed.
 
 ---
 

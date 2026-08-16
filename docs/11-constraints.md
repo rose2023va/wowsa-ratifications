@@ -77,17 +77,22 @@ Not a tooling limit, but it constrains solutions just as hard.
 **Nothing captured during a swim can depend on being connected.** A crew is on a boat in open
 water. There is often no internet and frequently no laptop.
 
-Two things have already been built and tested against this and neither held up:
+Three approaches have already been built or tested against this and none held up:
 
-1. An **online observer log** intended to capture entries live during the swim
-2. A **real time photo submission form** intended to capture timestamps at the moment of capture
+1. An **online observer log**, built by Rose, intended to capture entries live during the swim.
+   Failed on connectivity.
+2. A **real time media submission form**, built by Rose, capturing photograph timestamps at the
+   moment of capture rather than relying on metadata surviving afterwards. Failed for the same
+   reason and could not be made consistent.
+3. **AI transcription** of the paper or PDF log after the fact. Tested and not accurate enough to
+   rely on for an evidence record.
 
-Both failed for the same reason. Any proposal that involves the crew submitting something while
-the swim is happening will fail the same way.
+The first two failed for the same reason: they assumed a live connection. The third failed on
+accuracy.
 
-What this leaves: the observer records on paper or in a fillable PDF, and the evidence is
-submitted afterwards. Improvements have to work on what arrives after the fact, not on capturing
-it live.
+What this leaves: the observer records on paper or in a fillable PDF, and the log is currently
+retyped. The one version of this that has not been tried is a form that holds entries on the
+device and uploads when signal returns.
 
 ---
 
