@@ -103,7 +103,7 @@ Whichever route is used, the log is then transcribed entry by entry into the Wor
 
 ## Canva
 
-Six templates. All data is typed in manually per swim. The social post additionally uses a
+Five templates. All data is typed in manually per swim. The social post additionally uses a
 **screenshot of the finished ratification page** as its imagery.
 
 | Asset | Outcome | Design |
@@ -113,7 +113,6 @@ Six templates. All data is typed in manually per swim. The social post additiona
 | Social post | Ratified | `[CANVA_URL_POST_RATIFIED]` |
 | Social card | Verified attempt | `[CANVA_URL_CARD_ATTEMPT]` |
 | Social post | Verified attempt | `[CANVA_URL_POST_ATTEMPT]` |
-| Story format | Role unconfirmed | `[CANVA_URL_STORY]` |
 
 **Both outcomes receive assets.** Swims that are not ratified are published as a verified attempt.
 That was agreed after the workflow was built and could not be added to it, so it is done manually

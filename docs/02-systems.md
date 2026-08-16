@@ -81,7 +81,9 @@ The workflow engine, the identity layer and the form layer.
 
 ### Other ratification forms in the account
 
-Not confirmed as part of the current flow. Recorded so nothing is assumed dead.
+The Jotform account is shared with Quinn and holds forms from other WOWSA work and from earlier
+versions of this process. These are **not part of the current ratification flow**. Listed only so
+that anyone searching the account is not misled by them.
 
 | Form | ID |
 |---|---|
@@ -185,7 +187,7 @@ show only the play button and volume.
 
 ## Canva
 
-Six templates. All content is typed in manually for each swim.
+Five templates. All content is typed in manually for each swim.
 
 | Asset | Outcome | Design |
 |---|---|---|
@@ -194,7 +196,6 @@ Six templates. All content is typed in manually for each swim.
 | Social post | Ratified | `[CANVA_URL_POST_RATIFIED]` |
 | Social card | Verified attempt | `[CANVA_URL_CARD_ATTEMPT]` |
 | Social post | Verified attempt | `[CANVA_URL_POST_ATTEMPT]` |
-| Story format | Role unconfirmed | `[CANVA_URL_STORY]` |
 
 ---
 

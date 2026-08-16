@@ -161,7 +161,7 @@ An extended version of this script covering product, add-ons and order link was 
 |---|---|---|
 | Workflow | `tblulYhWIpP0E3eov` | The tracker. Records are moved here manually. |
 | Table 1 | `tblAPf6E4uzRS0oCE` | Where orders land from the automation. |
-| Pre-Swim Planning | to confirm | To confirm. |
+| Pre-Swim Planning | to confirm | Part of a paused effort to rebuild the pipeline inside Airtable. Not currently in use. |
 
 ### Table 1 fields
 
@@ -169,7 +169,7 @@ An extended version of this script covering product, add-ons and order link was 
 
 | Field | Type | Populated by |
 |---|---|---|
-| SWIM ID# | Formula | Derived |
+| SWIM ID# | Formula | Matches the SWIM ID held in Jotform |
 | SWIM ID | Text, currently hidden | Jotform |
 | Email Address | Email | Order automation |
 | Order ID | Text | Order automation |
@@ -177,11 +177,11 @@ An extended version of this script covering product, add-ons and order link was 
 | Amount Paid | Currency | Order automation |
 | First Name | Text | Order automation |
 | Last Name | Text | Order automation |
-| Swim Date | Date | To confirm |
-| Swimmer's First Name | Text | To confirm |
-| Swimmer's Last Name | Text | To confirm |
-| Swimmer's Email Address | Email | To confirm |
-| Auto ID | Autonumber | To confirm |
+| Swim Date | Date | Typed in from the Pre-Swim Planning submission |
+| Swimmer's First Name | Text | Typed in from the Pre-Swim Planning submission |
+| Swimmer's Last Name | Text | Typed in from the Pre-Swim Planning submission |
+| Swimmer's Email Address | Email | Typed in from the Pre-Swim Planning submission |
+| Auto ID | Autonumber | Airtable side sequence |
 | Product | Text | Nothing |
 | Add-ons | Long text | Nothing |
 | Record Attempt | Checkbox | Nothing |
@@ -311,7 +311,7 @@ START
                        END
 ```
 
-Two **Email** nodes addressed to **7 recipients** appear detached from the main path in the builder, greyed out. Their purpose is not established.
+Two **Email** nodes addressed to **7 recipients** sit detached from the main path in the builder, greyed out. They are left over from the previous system, when committee dispatch ran inside the workflow. That changed when the review moved onto the ratification page itself and the reviewer pool was widened. Nothing depends on them.
 
 ---
 
@@ -1371,7 +1371,6 @@ Made manually in **Canva**, from saved templates. **Both outcomes receive assets
 |---|---|
 | Social card | `[CANVA_URL_CARD_ATTEMPT]` |
 
-A further template exists at `[CANVA_URL_STORY]`, recorded as a Story format. Its current role is unconfirmed.
 
 **"Verified attempt" is the public term for a swim that was not ratified.** Not rejected, not failed. This is the language WOWSA actually uses on social assets, and it sits alongside "Not Ratified" and "attempted" in internal use.
 
@@ -1654,6 +1653,27 @@ So the last artefact in the process is assembled by photographing a page that wa
 
 ---
 
+## Rescheduled swims
+
+Swimmers reschedule reasonably often. It is handled without restarting anything from scratch:
+
+1. Edit the date on the swimmer's existing Pre-Swim Planning submission
+2. Restart the Jotform workflow
+
+The SWIM ID is preserved. This is why rescheduling does not create the duplicate identifier problem that a route denial would.
+
+## How often a swim comes through twice
+
+| Case | Frequency |
+|---|---|
+| Rescheduled swim | Common, handled by editing the submission |
+| Route review denial | Rare |
+| Same swim resubmitted | Rare |
+| Withdrawal | Does not happen |
+| Second attempt at the same route | None in the last two years |
+
+---
+
 ## The Workflow table: the manual spine
 
 **Airtable, Ratifications Pipeline, `tblulYhWIpP0E3eov`**
@@ -1691,31 +1711,3 @@ Not confirmed as part of the current flow. Recorded so nothing is assumed dead.
 | Swim Safety Debrief | `251220205260135` |
 
 ---
-
-## Open questions
-
-Running list. Answered as the walkthrough continues, not guessed at.
-
-1. ~~Table naming~~ **Resolved.** Table 1 is `tblAPf6E4uzRS0oCE`. Workflow is `tblulYhWIpP0E3eov`.
-2. ~~What the Ratification Email sends~~ **Resolved.** It carries the Pre-Swim Planning form link.
-3. ~~Where the SWIM ID comes from~~ **Resolved.** Auto increment plus calculation field on the Pre-Swim Planning form.
-4. ~~Solo and relay~~ **Resolved as a gap.** The relay form exists but was never wired into the workflow, and the entry email hardcodes the solo form. Every case so far has run as a solo swim.
-5. ~~Add-ons~~ **Resolved as a gap.** Not captured, and the instruction emails that should follow are not being sent.
-6. **The 5 runs this month.** Did they complete, or are they failing at the script step.
-7. **SWIM ID# versus SWIM ID in Airtable.** One is a formula and visible, the other is plain text and hidden. Which is authoritative, and how does the value get from Jotform into Airtable.
-8. **Auto ID in Airtable.** Is this the same value as the Jotform Auto ID, or a separate Airtable autonumber.
-9. **Swim Date and the Swimmer's fields in Airtable.** Filled from Jotform, or manually.
-10. **The Pre-Swim Planning table in Airtable.** Synced from Jotform, or maintained separately.
-11. **The move to Workflow.** What triggers it, what gets updated, and what the Workflow table holds that Table 1 does not.
-12. ~~HubSpot~~ **Resolved.** Already dropped from the WOWSA app stack, so the nodes were inert. Being removed from the workflow on 16 August 2026.
-13. **The two detached Email nodes, 7 recipients each.** What they were for, and whether anything depends on them.
-14. ~~Approval assignments~~ **Resolved for Approval 1.** The approver is the shared admin mailbox `contact@openwaterswimming.com`. The builder label showing Quinn Fitzgerald is the node owner, not the approver. To confirm whether the other five stops are set the same way.
-19. ~~The Deny path~~ **Resolved.** Route Review Outcome email, carries the approver's reason, ends the workflow.
-22. **Resubmission after a denial.** To confirm that a corrected plan comes back as a new submission with a new SWIM ID, and that nothing links it to the first.
-23. **House style in live emails.** The Route Review Outcome email contains an em dash. Both route emails use an en dash in the subject line.
-20. **The route screenshot.** Where it is stored after it is emailed, if anywhere.
-21. **The measured distance.** Currently exists only as an image and an email. Where, if anywhere, does the number get recorded.
-15. **Hidden fields on the entry form.** "Will this be an unassisted or assisted swim?" and "Who is your pilot?" are both hidden, and the pilot question is also marked required. Deliberate, or left over.
-16. **Google Calendar and Google Drive.** What each one writes, and where.
-17. **Committee form cloning.** Who creates the per-swim copy, and how the three reviewer emails are set.
-18. **Form sprawl.** Fourteen other ratification forms exist in the account. Which are live, which are retired.

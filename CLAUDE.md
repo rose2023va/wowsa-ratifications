@@ -14,9 +14,8 @@ being changed is usually load bearing for something three systems away.
 **Record what is, not what should be.** This is a description of a live system. Proposals,
 opinions and improvements belong in issues, not in `docs/`.
 
-**Mark uncertainty rather than resolving it.** If something cannot be verified against the live
-system, add it to `docs/13-open-questions.md`. Do not infer, and do not fill a gap with a
-plausible guess. An earlier draft of this material described the two Google Drive folders as an
+**Ask rather than infer.** If something cannot be verified against the live system, ask the person
+who runs the process. Do not fill a gap with a plausible guess. An earlier draft of this material described the two Google Drive folders as an
 unlinked defect; they are in fact two folders with two different purposes. That error came from
 inferring rather than asking.
 

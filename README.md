@@ -23,7 +23,7 @@ against what is written here, not against a description of how the process is su
 | Understand how the committee reviews and decides | [docs/09-committee.md](docs/09-committee.md) |
 | See exactly what a person does, and how often | [docs/10-manual-work.md](docs/10-manual-work.md) |
 | Know what the tooling genuinely cannot do | [docs/11-constraints.md](docs/11-constraints.md) |
-| Review known defects | [docs/12-defects.md](docs/12-defects.md) |
+| Review known defects | [docs/12-defects.md](docs/12-defects.md) and the [issue tracker](../../issues) |
 
 Terminology matters in this domain and is easy to get wrong.
 Read [reference/glossary.md](reference/glossary.md) before writing anything customer facing.
@@ -91,5 +91,4 @@ addresses are not recorded anywhere in this repository.
 
 Step by step from the live systems: the Airtable automation builder, the Jotform workflow
 builder, the Jotform API for exact form definitions, the WordPress block markup, and the Google
-Drive structure. Where something could not be verified it is marked as unconfirmed rather than
-guessed at. See [docs/13-open-questions.md](docs/13-open-questions.md).
+Drive structure, then checked line by line with the person who runs the process.

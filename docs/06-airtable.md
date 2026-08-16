@@ -10,7 +10,7 @@ Base: **Ratifications Pipeline**, `appgUjmgd0K8WWp31`
 |---|---|---|
 | Workflow | `tblulYhWIpP0E3eov` | The tracker. Updated manually at every stage. Nothing writes to it. |
 | Table 1 | `tblAPf6E4uzRS0oCE` | Where orders land from the automation. |
-| Pre-Swim Planning | To confirm | Contents not yet documented. See [13-open-questions.md](13-open-questions.md). |
+| Pre-Swim Planning | To confirm | Part of a paused effort to rebuild the pipeline inside Airtable, with one table per form. Not currently in use. |
 
 ---
 
@@ -20,7 +20,7 @@ Eight records at time of capture.
 
 | Field | Type | Populated by |
 |---|---|---|
-| SWIM ID# | Formula | Derived |
+| SWIM ID# | Formula | Matches the SWIM ID held in Jotform |
 | SWIM ID | Text, currently hidden | Jotform |
 | Email Address | Email | Order automation, from billing |
 | Order ID | Text | Order automation |
@@ -28,11 +28,11 @@ Eight records at time of capture.
 | Amount Paid | Currency | Order automation |
 | First Name | Text | Order automation, from billing |
 | Last Name | Text | Order automation, from billing |
-| Swim Date | Date | To confirm |
-| Swimmer's First Name | Text | To confirm |
-| Swimmer's Last Name | Text | To confirm |
-| Swimmer's Email Address | Email | To confirm |
-| Auto ID | Autonumber | To confirm |
+| Swim Date | Date | Typed in from the Pre-Swim Planning submission |
+| Swimmer's First Name | Text | Typed in from the Pre-Swim Planning submission |
+| Swimmer's Last Name | Text | Typed in from the Pre-Swim Planning submission |
+| Swimmer's Email Address | Email | Typed in from the Pre-Swim Planning submission |
+| Auto ID | Autonumber | Airtable side sequence |
 | Product | Text | **Nothing** |
 | Add-ons | Long text | **Nothing** |
 | Record Attempt | Checkbox | **Nothing** |
@@ -117,7 +117,11 @@ if (!matchFound) {
 }
 ```
 
-### Current fault state
+### Current state
+
+**Records are landing.** Nothing reaches Airtable if the automation breaks, and the data in Table 1 is present and correct, so the live runs are completing. The errors below appear on the trigger test rather than on live execution.
+
+### Reported errors
 
 - The Run a script step shows **Fix configuration**
 - The `payload` input reads **Invalid value**
@@ -145,6 +149,12 @@ read-only node. The change must be pasted in through the Airtable interface by a
 
 An extended version covering product, add-ons and order link was drafted on 6 August 2026,
 was never applied, and was not saved anywhere. It is gone.
+
+---
+
+## A note on the manual entry
+
+The manual work in Airtable is a temporary bridge. The longer term intention is to connect every form and run the automation inside Airtable directly. That work is paused.
 
 ---
 
