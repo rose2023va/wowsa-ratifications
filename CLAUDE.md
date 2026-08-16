@@ -11,8 +11,9 @@ being changed is usually load bearing for something three systems away.
 
 ## Rules for anyone editing these documents
 
-**Record what is, not what should be.** This is a description of a live system. Proposals,
-opinions and improvements belong in issues, not in `docs/`.
+**Record what is, not what should be.** `docs/` is a description of a live system. Proposals,
+opinions and improvements belong in issues, or in `PROPOSAL-ANALYSIS.md`, which is the only
+forward looking document in this repository.
 
 **Ask rather than infer.** If something cannot be verified against the live system, ask the person
 who runs the process. Do not fill a gap with a plausible guess. An earlier draft of this material described the two Google Drive folders as an

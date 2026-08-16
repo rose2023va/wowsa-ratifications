@@ -6,6 +6,9 @@ A forensic record of how the WOWSA independent marathon swim ratification proces
 This is the source of truth. Any proposed change, rebuild or automation should be planned
 against what is written here, not against a description of how the process is supposed to work.
 
+Everything in `docs/` describes the system **as it is**. Forward looking analysis lives in one
+place, [PROPOSAL-ANALYSIS.md](PROPOSAL-ANALYSIS.md).
+
 ---
 
 ## Start here
@@ -24,6 +27,7 @@ against what is written here, not against a description of how the process is su
 | See exactly what a person does, and how often | [docs/10-manual-work.md](docs/10-manual-work.md) |
 | Know what the tooling genuinely cannot do | [docs/11-constraints.md](docs/11-constraints.md) |
 | Review known defects | [docs/12-defects.md](docs/12-defects.md) and the [issue tracker](../../issues) |
+| See what a proposed redesign would change | [PROPOSAL-ANALYSIS.md](PROPOSAL-ANALYSIS.md) |
 
 Terminology matters in this domain and is easy to get wrong.
 Read [reference/glossary.md](reference/glossary.md) before writing anything customer facing.
