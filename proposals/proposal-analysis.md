@@ -8,7 +8,7 @@ Two things are analysed here:
 1. **Quinn's proposed redesign**, and what each part of it would touch
 2. **The combined plan**: Jotform keeps the forms, Airtable becomes the engine, Lovable renders the pages
 
-Read [docs/03-flow.md](docs/03-flow.md) first. Nothing below makes sense without it.
+Read [../docs/03-flow.md](../docs/03-flow.md) first. Nothing below makes sense without it.
 
 ---
 
@@ -73,7 +73,7 @@ Jotform answers into Airtable. Airtable sends the next form when it is due. Lova
 
 ### Why this matters more than it looks
 
-All three platform constraints in [docs/11-constraints.md](docs/11-constraints.md) exist because
+All three platform constraints in [../docs/11-constraints.md](../docs/11-constraints.md) exist because
 **Jotform runs the process**. Moving the engine to Airtable removes all three at once:
 
 | Constraint today | Consequence removed |
@@ -90,21 +90,21 @@ Three defects also disappear structurally rather than being fixed:
 
 ### What becomes automatic
 
-| Stage | Today | After |
-|---|---|---|
-| Order and intake | Automatic, but add-ons and solo versus relay are lost | Automatic and complete |
-| Route distance | Measured in Google Maps, screenshotted, emailed | Calculated from the coordinates and written to the record |
-| Route approval | Emailed to Quinn, reply, then recorded separately | Quinn approves in one place and it records itself |
-| Knowing the swim happened | Manual calendar check | Automatic |
-| Folders and file collection | One folder made manually, one automatic | Both automatic |
-| Checking evidence is complete | Opening folders and noticing | Flagged automatically, with the chase email drafted |
-| Observer log | Every entry retyped | Held as data and rendered on the page |
-| Building the page | Assembled manually across six systems | The page is the record. Nothing to assemble |
-| Committee form | Cloned, edited and embedded per swim | No form to clone |
-| Committee dispatch and chasing | Email written manually, reviews counted manually | Automatic, with reminders to whoever has not responded |
-| Publishing the result | Two tables built manually, form removed, names and signatures added | Renders from the reviews as they arrive |
-| Certificates and social cards | Made manually for every ratification | Generated from the record |
-| Status tracking | Typed in at every stage | The record is the status |
+| Stage | Today | After | How |
+|---|---|---|---|
+| Order and intake | Automatic, but add-ons and solo versus relay are lost | Automatic and complete | The order webhook writes the full line item, including the variation and any add-ons, straight onto the record |
+| Route distance | Measured in Google Maps, screenshotted, emailed | Calculated from the coordinates and written to the record | Airtable calls the distance service with the start and finish coordinates and stores both figures |
+| Route approval | Emailed to Quinn, reply, then recorded separately | Quinn approves in one place and it records itself | The decision and the record become the same action, taken from the notification itself |
+| Knowing the swim happened | Manual calendar check | Automatic | A scheduled check looks for swim dates that have passed and moves those records on |
+| Folders and file collection | One folder made manually, one automatic | Both automatic | The swim folder is created from the template on clearance, and every uploaded file lands in it |
+| Checking evidence is complete | Opening folders and noticing | Flagged automatically, with the chase email drafted | The record tests itself for GPS, log, photos and video, and anything incomplete collects in one view |
+| Observer log | Every entry retyped | Held as data and rendered on the page | The observer logs into a form that writes one row per timestamp, so the log arrives already structured |
+| Building the page | Assembled manually across six systems | The page is the record. Nothing to assemble | Lovable reads the record and renders it. There is no build step to perform |
+| Committee form | Cloned, edited and embedded per swim | No form to clone | The review sits on the record itself, with access granted per member rather than per form |
+| Committee dispatch and chasing | Email written manually, reviews counted manually | Automatic, with reminders to whoever has not responded | Reviews are counted as they arrive, and reminders go only to the people still outstanding |
+| Publishing the result | Two tables built manually, form removed, names and signatures added | Renders from the reviews as they arrive | The determination panel reads the review records directly, so nothing is transcribed |
+| Certificates and social cards | Made manually for every ratification | Generated from the record | Canva templates are filled from the record and exported into the swim folder |
+| Status tracking | Typed in at every stage | The record is the status | Each stage is written by whatever step performed it, so there is nothing to keep in sync |
 
 ### What still needs a person
 
